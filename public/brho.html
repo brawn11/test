@@ -1,27 +1,117 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <title>صفحة brho</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      text-align: center;
-      margin-top: 50px;
-    }
-    .message {
-      color: blue;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>واتساب بوت إرسال رسالة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            direction: rtl;
+            text-align: right;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+            min-height: 24px;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h2>إرسال رسالة واتساب</h2>
+        <form id="sendForm">
+            <label for="number">رقم الهاتف (مع رمز الدولة بدون +)</label>
+            <input type="text" id="number" placeholder="مثال: 966501234567" required />
 
-  <div class="message">✅ ملف main.js تم التشغيل بنجاح</div>
-  <div id="resultMain"></div>
+            <label for="message">نص الرسالة</label>
+            <textarea id="message" rows="4" placeholder="اكتب رسالتك هنا..." required></textarea>
 
-  <script src="js/main.js"></script>
+            <button type="submit">إرسال</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('sendForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const number = document.getElementById('number').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!number || !message) {
+                resultDiv.textContent = 'يرجى ملء جميع الحقول.';
+                resultDiv.style.color = 'red';
+                return;
+            }
+
+            resultDiv.textContent = 'جاري الإرسال...';
+            resultDiv.style.color = 'black';
+
+            try {
+                const response = await fetch('/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ number, message })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    resultDiv.textContent = '✅ تم إرسال الرسالة بنجاح!';
+                    resultDiv.style.color = 'green';
+                    form.reset();
+                } else {
+                    resultDiv.textContent = '❌ فشل الإرسال: ' + (data.error || 'خطأ غير معروف');
+                    resultDiv.style.color = 'red';
+                }
+            } catch (error) {
+                resultDiv.textContent = '❌ حدث خطأ في الاتصال بالخادم.';
+                resultDiv.style.color = 'red';
+            }
+        });
+    </script>
+
+    <!-- إضافة ملف main.js -->
+    <script src="/main.js"></script>
 </body>
 </html>
