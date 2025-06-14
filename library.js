@@ -1,12 +1,15 @@
-const http = require('http');
+const express = require('express');
+const app = express();
 
-const PORT = process.env.PORT || 3000;  // خذ المنفذ من البيئة أو 3000 بشكل افتراضي
+// خلي المنفذ من متغير البيئة أو 3000 افتراضياً
+const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello from Render!\n');
+// مثال مسار بسيط
+app.get('/', (req, res) => {
+  res.send('مرحباً بك في سيرفري على Render!');
 });
 
-server.listen(PORT, () => {
+// شغل السيرفر
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
