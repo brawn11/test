@@ -5,8 +5,8 @@
 #./upload.sh   يتحول لبرنج ثم تشغيل 
 
 # ./upload.sh add      امر تطبيق التعديلات كلها   
-# ./upload.sh del      امر حذف الملفات كلها   
-
+# ./upload.sh del      امر حذف الملفات كلها  
+# git push -f origin main     امر اذا حصلت مشكله في الرفع       
 
 
 
