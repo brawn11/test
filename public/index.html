@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html lang="ar">
-<head><meta charset="UTF-8"><title>تجربة المكتبة</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>تجربة المكتبة</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .message {
+      color: green;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .greeting {
+      font-size: 20px;
+    }
+  </style>
+</head>
 <body>
-<script src="library.js"></script>
-<script>
-  alert(greet('علي'));
-</script>
+
+  <div class="message">✅ تم التشغيل بنجاح</div>
+  <div class="greeting" id="result"></div>
+
+  <script src="library.js"></script>
+  <script>
+    // عرض الترحيب داخل العنصر
+    document.getElementById("result").textContent = greet("علي");
+  </script>
 </body>
 </html>
