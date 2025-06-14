@@ -6,24 +6,18 @@ const qrcode = require('qrcode-terminal');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// دعم JSON للطلبات POST
 app.use(express.json());
-
-// ملفات ثابتة من مجلد public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// مسار الصفحة الرئيسية يرسل index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'brho.html'));
 });
 
-// تهيئة بوت واتساب
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: { args: ['--no-sandbox'] }
 });
 
-// عرض QR في التيرمنال
 client.on('qr', qr => {
   console.log('QR RECEIVED');
   qrcode.generate(qr, { small: true });
@@ -41,7 +35,6 @@ client.on('message', async msg => {
 
 client.initialize();
 
-// استقبال طلب إرسال رسالة واتساب عبر POST
 app.post('/send-message', async (req, res) => {
   const { number, message } = req.body;
   if (!number || !message) return res.status(400).json({ success: false, error: 'الرقم والرسالة مطلوبان' });
@@ -57,7 +50,6 @@ app.post('/send-message', async (req, res) => {
   }
 });
 
-// تشغيل السيرفر
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
