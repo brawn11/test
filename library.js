@@ -1,16 +1,15 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
 
-// تعيين مجلد public كمصدر للملفات الثابتة
-app.use(express.static(path.join(__dirname, 'public')));
+// خلي المنفذ من متغير البيئة أو 3000 افتراضياً
+const PORT = process.env.PORT || 3000;
 
-// أي طلب جاي على السيرفر يرسل ملف index.html تلقائياً (لصفحة رئيسية)
+// مثال مسار بسيط
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.send('مرحباً بك في سيرفري على Render!');
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// شغل السيرفر
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
